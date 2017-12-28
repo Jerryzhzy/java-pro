@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod=" 3600 seconds">
+	<timestamp key="startTime" datePattern="yyyyMMdd'T'HHmmss"/>
+	<appender name="INFO_LOG_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>../logs/info_log/info_log-${startTime}.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>../logs/info_log/info_log.%d{yyyy-MM-dd_HH}.log.zip</fileNamePattern>
+			<maxHistory>30</maxHistory>
+			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>100MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg [%file:%line] %n</pattern>
+		</encoder>
+	</appender>
+	<appender name="ANALYZE_LOG_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>../logs/analyze_log/analyze_log-${startTime}.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>../logs/analyze_log/analyze_log.%d{yyyy-MM-dd_HH}.log.zip</fileNamePattern>
+			<maxHistory>30</maxHistory>
+			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>100MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg [%file:%line] %n</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="ERROR_LOG_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>../logs/error_log/error_log-${startTime}.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>../logs/error_log/error_log.%d{yyyy-MM-dd_HH}.log.zip</fileNamePattern>
+			<maxHistory>30</maxHistory>
+			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>100MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg [%file:%line] %n</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%date{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="rollingFile"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>/tmp/logs/lzc.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>/logs/lzc.%d{yyyy-MM-dd}.%i.log
+			</fileNamePattern>
+			<!-- keep 30 days' worth of history -->
+			<maxHistory>30</maxHistory>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<!-- or whenever the file size reaches 100MB -->
+				<maxFileSize>1MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%date{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+
+	<!-- project default level -->
+	<logger name="com.lzc" level="error" />
+
+	<!--log4jdbc-->
+	<logger name="jdbc.sqltiming" level="INFO" />
+	<!--错误 日志-->
+	<logger name="error_log" level="ERROR" additivity="false">
+		<appender-ref ref="ERROR_LOG_FILE" />
+	</logger>
+	<!--打印 日志-->
+	<logger name="info_log" level="INFO" additivity="false">
+		<appender-ref ref="INFO_LOG_FILE" />
+	</logger>
+	<!--分析 日志-->
+	<logger name="analyze_log" level="INFO" additivity="false">
+		<appender-ref ref="ANALYZE_LOG_FILE" />
+	</logger>
+
+	<root level="ERROR">
+		<appender-ref ref="ERROR_LOG_FILE" />
+	</root>
+	<!--<root level="INFO">
+		<appender-ref ref="STDOUT"/>
+	</root>-->
+
+	<root level="WARN">
+		<appender-ref ref="console" />
+		<appender-ref ref="rollingFile" />
+	</root>
+</configuration>

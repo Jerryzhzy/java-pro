@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/aop  http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+	<!--通知spring使用cglib而不是jdk的来生成代理方法 AOP可以拦截到Controller -->  
+	 <!-- <aop:aspectj-autoproxy proxy-target-class="true" />  
+	 -->
+	<!-- 自动扫描且只扫描@Controller -->
+	<context:component-scan base-package="com.lzc"
+		use-default-filters="false">
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+		<context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice" />
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Repository"/> 
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Service"/> 	
+	</context:component-scan>
+	<!-- <bean id= "logAspect" class="com.lzc.core.system.utils.LogAscept"/> -->
+	<!-- 开启mvc注解 -->
+	<mvc:annotation-driven />
+	<!-- 允许对静态资源文件的访问 -->
+	
+	<bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"/> 
+	
+	<mvc:default-servlet-handler />
+
+	<mvc:annotation-driven>
+		<mvc:message-converters register-defaults="true">
+			<!-- 将StringHttpMessageConverter的默认编码设为UTF-8 -->
+			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+				<constructor-arg value="UTF-8" />
+			</bean>
+			<!-- 将Jackson2HttpMessageConverter的默认格式化输出设为true -->
+			<bean
+				class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+				<property name="prettyPrint" value="true" />
+			</bean>
+		</mvc:message-converters>
+		<mvc:argument-resolvers>
+			<bean class="org.springframework.data.web.PageableHandlerMethodArgumentResolver">
+				<property name="maxPageSize" value="7"/>
+				<property name="oneIndexedParameters" value="true"/>
+				<property name="pageParameterName" value="page.page"/>
+				<property name="sizeParameterName" value="page.size"/>
+			</bean>
+		</mvc:argument-resolvers>
+	</mvc:annotation-driven>
+	<!-- 完成请求和注解POJO的映射 	
+    <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+		<property name="messageConverters">
+			<list>
+				<bean class="org.springframework.http.converter.StringHttpMessageConverter" />
+				<bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
+					<property name="supportedMediaTypes">
+						<list>
+							<value>application/json;charset=UTF-8</value>
+						</list>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+	-->
+    <bean class="org.springframework.data.web.PageableHandlerMethodArgumentResolver"/>
+    
+	<!-- freemarker的配置 -->
+	<bean id="freemarkerConfig"
+		class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+		<property name="templateLoaderPath" value="/pages/" />
+		<property name="defaultEncoding" value="utf-8" />
+		<property name="freemarkerSettings">
+			<props>
+				<prop key="template_update_delay">1</prop><!-- 模板刷新周期，开发时设置小点，上线再设置大些 -->
+				<prop key="locale">zh_CN</prop>
+				<prop key="date_format">yyyy-MM-dd</prop>
+				<prop key="datetime_format">yyyy-MM-dd HH:mm:ss</prop>
+				<prop key="time_format">HH:mm:ss</prop>
+				<prop key="number_format">#.##</prop>
+				<prop key="auto_import">spring.ftl as spring</prop>
+			</props>
+		</property>
+		<!-- 配置使用freemarker的自定义标签 -->
+		<property name="freemarkerVariables">
+			<map>
+				<entry key="input" value-ref="input"/>
+				<entry key="json" value-ref="json"/>
+				<entry key="enummap" value-ref="enummap"/>
+				<entry key="enumlist" value-ref="enumlist"/>
+			</map>
+		</property>
+	</bean>
+	<bean id="input" class="com.lzc.core.freemarker.InputDirective" />
+	<bean id="json" class="com.lzc.core.freemarker.JsonDirective" />
+	<bean id="enummap" class="com.lzc.core.freemarker.EnummapDirective" />
+	<bean id="enumlist" class="com.lzc.core.freemarker.EnumlistDirective" />
+	
+	<!-- FreeMarker视图解析 如返回student。。在这里配置后缀名ftl和视图解析器。。 -->
+	<bean class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver"
+		p:order="1"
+		p:viewClass="org.springframework.web.servlet.view.freemarker.FreeMarkerView"
+		p:contentType="text/html;charset=utf-8"
+		p:suffix=".ftl"
+		p:requestContextAttribute="request"
+		p:exposeRequestAttributes="true"
+		p:exposeSessionAttributes="true"
+		p:exposeSpringMacroHelpers="true"/>
+		<!-- 
+		p:viewClass="com.lzc.core.freemarker.FreeMarkerViewCustom"
+		 -->
+	<!-- 定义JSP和JSTL视图解析器，将视图逻辑名解析为：/views/<viewName>.jsp -->
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"
+		p:order="2"
+		p:viewClass="org.springframework.web.servlet.view.JstlView"
+		p:prefix="/statistical/" 
+		p:suffix=".jsp"/>
+	<!-- 国际化配置 -->
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basenames">
+			<list>
+				<value>i18n/messages</value>
+			</list>
+		</property>
+	</bean>
+	<!-- 国际化操作 拦截器 -->
+	<mvc:interceptors>
+		<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor"/>
+		<!--<bean class="com.lzc.core.interceptor.ValidateFormSubmissionInterceptor"/>-->
+	</mvc:interceptors>
+	<!-- 基于Session的国际化配置 -->
+	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver" p:defaultLocale="zh_CN"/>
+
+	<!-- 容器默认的DefaultServletHandler处理 所有静态内容与无RequestMapping处理的URL -->
+	<mvc:default-servlet-handler />
+
+	<!-- 定义无需Controller的url<->view直接映射 <mvc:view-controller path="/" view-name="redirect:/index"/> -->
+
+	<!-- 定义拦截器 -->
+	<mvc:interceptors>
+		<mvc:interceptor>  
+            <mvc:mapping path="/*"/>
+            <mvc:mapping path="/*/*"/>
+            <bean class="com.lzc.core.interceptor.RequestInterceptor">
+	            <!-- 定义在mvc:interceptor下面的过滤拦截URL 此URL不进行拦截处理 -->
+	            <property name="uncheckUrls">
+	                  <list>
+					  		<value>/demo</value>
+	                   </list>
+	            </property> 
+	        </bean>    
+        </mvc:interceptor>
+	</mvc:interceptors>
+	
+	<!-- 将Controller抛出的异常转到特定View 打开注释后会跳转到500.jsp中
+	 -->
+	<bean
+		class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<property name="exceptionMappings">
+			<props>
+				<prop key="java.lang.Throwable">500</prop>
+			</props>
+		</property>
+	</bean>
+	 <!-- 文件上传，配置MultipartResolver处理器 -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"
+		p:maxUploadSize="83886080"/><!-- 文件大小上限10MB 10485760-->
+</beans>

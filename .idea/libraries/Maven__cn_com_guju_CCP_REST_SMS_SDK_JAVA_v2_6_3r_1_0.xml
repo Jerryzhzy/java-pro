@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: cn.com.guju:CCP_REST_SMS_SDK_JAVA_v2.6.3r:1.0">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/cn/com/guju/CCP_REST_SMS_SDK_JAVA_v2.6.3r/1.0/CCP_REST_SMS_SDK_JAVA_v2.6.3r-1.0.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/cn/com/guju/CCP_REST_SMS_SDK_JAVA_v2.6.3r/1.0/CCP_REST_SMS_SDK_JAVA_v2.6.3r-1.0-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/cn/com/guju/CCP_REST_SMS_SDK_JAVA_v2.6.3r/1.0/CCP_REST_SMS_SDK_JAVA_v2.6.3r-1.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
