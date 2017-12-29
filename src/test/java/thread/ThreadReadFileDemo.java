@@ -16,9 +16,10 @@ import java.util.List;
  */
 public class ThreadReadFileDemo {
     protected final static Logger error_logger = LoggerFactory.getLogger("error_log");
-    public static void main(String[] args) {
-        Thread t1 = new Thread(new MultiThread(), "A");
-        Thread t2 = new Thread(new MultiThread(), "B");
+    @org.junit.Test
+    public void test() {
+        Thread t1 = new Thread(new MultiThread(), "Thread Name A");
+        Thread t2 = new Thread(new MultiThread(), "Thread Name A");
         t1.start();
         t2.start();
     }
@@ -32,7 +33,7 @@ class MultiThread implements Runnable{
 
         static{
             try {
-                br = new BufferedReader(new FileReader("F://ThreadDemo.txt"),10);
+                br = new BufferedReader(new FileReader("C://offline_FtnInfo.txt"),10);
             } catch (FileNotFoundException e) {
                 // TODO Auto-generated catch block
                 ThreadReadFileDemo.error_logger.error("File read error",e);

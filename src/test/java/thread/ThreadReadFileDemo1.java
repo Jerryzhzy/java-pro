@@ -19,24 +19,25 @@ public class ThreadReadFileDemo1 {
     protected final static Logger analyze_logger = LoggerFactory.getLogger("analyze_log");
     protected final static Logger error_logger = LoggerFactory.getLogger("error_log");
     protected static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    public static void main(String args[]){
+    @org.junit.Test
+    public void test(){
         ScheduledExecutorService newScheduledThreadPool = Executors.newScheduledThreadPool(10);//允许最多同时执行10个进程
         //方式一：一次性线程
         newScheduledThreadPool.schedule(
-                new MultiThread1("c:\\test.log", 0,1000),
+                new MultiThread1("C://offline_FtnInfo.txt", 0,1000),
                 0,//启动工程后多少时间后开始执行该线程
                 TimeUnit.SECONDS);
 
         //方式二：固定的频率来执行某项计划，它不受执行时间的影响。到周期时间，它就执行。
         newScheduledThreadPool.scheduleAtFixedRate(
-                new MultiThread1("c:\\test.log", 0,1000),
+                new MultiThread1("C://offline_FtnInfo.txt", 0,1000),
                 0,   //启动工程后多少时间后开始执行该线程
                 500, //执行周期，到时间就执行(500s一个周期)
                 TimeUnit.SECONDS);
 
         //方式二：固定的频率来执行某项计划，受执行时间的影响，只有上个任务执行完毕，才会开启下次执行倒计时。
         newScheduledThreadPool.scheduleWithFixedDelay(
-                new MultiThread1("c:\\test.log", 0,1000),
+                new MultiThread1("C://offline_FtnInfo.txt", 0,1000),
                 0,   //启动工程后多少时间后开始执行该线程
                 500, //执行周期，上一个任务执行完开始进入倒计时，500s后再次执行任务
                 TimeUnit.SECONDS);

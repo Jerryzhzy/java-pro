@@ -11,8 +11,9 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * Description 多线程往文件中写入数据
  */
 public class ThreadWriteFileDemo {
-    public static void main(String[] args) {
-        File file=new File("F:"+File.separator+"ThreadDemo.txt");
+    @org.junit.Test
+    public void test(String[] args) {
+        File file=new File("C:"+File.separator+"offline_FtnInfo.txt");
         try {
             FileOutputStream out=new FileOutputStream(file, true);
             ConcurrentLinkedQueue<String> queue=new ConcurrentLinkedQueue<String>();
