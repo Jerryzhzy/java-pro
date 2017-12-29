@@ -1,6 +1,8 @@
 # java_pro
 Java开发练习笔记
 
+该项目包含且不限以下内容:
+
 1.大型互联网公司源码学习 如alibaba/Google等。
 
 2.Java 常用工具类。
@@ -16,5 +18,7 @@ Java开发练习笔记
 备注：此项目会不断扩展更新，加入新的元素。
 
 项目结构如图：
-http://github.com/Jerryzhzy/readme_pic/raw/master/images/java_pro01.png
+
+![image](http://github.com/Jerryzhzy/java_pro/raw/master/readme_pic01.png)
+
 
