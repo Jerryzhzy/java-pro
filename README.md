@@ -16,7 +16,5 @@ Java开发练习笔记
 备注：此项目会不断扩展更新，加入新的元素。
 
 项目结构如图：
-
 ![image](http://github.com/Jerryzhzy/readme_pic/raw/master/images/java_pro01.png)
-
 
