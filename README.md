@@ -17,5 +17,6 @@ Java开发练习笔记
 
 项目结构如图：
 
-http://github.com/Jerryzhzy/readme_pic/raw/master/images/java_pro01.png
+![image](http://github.com/Jerryzhzy/readme_pic/raw/master/images/java_pro01.png)
+
 
