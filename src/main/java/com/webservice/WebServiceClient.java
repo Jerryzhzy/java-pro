@@ -211,7 +211,6 @@ public class WebServiceClient {
             call.addParameter(new QName(nameSpace,"dataInfo"), XMLType.XSD_STRING, ParameterMode.IN);//接口的参数
             call.setUseSOAPAction(true);
             call.setReturnType(XMLType.SOAP_STRING);
-            call.setSOAPActionURI(nameSpace);
             call.setSOAPActionURI(nameSpace+"/"+methodName);
             String result = (String)call.invoke(new Object[]{param});
             System.out.println("result == > " + result);
