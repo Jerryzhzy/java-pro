@@ -1,7 +1,7 @@
 package com.common.utils;
 
-import com.cloopen.rest.sdk.utils.encoder.BASE64Decoder;
-import com.cloopen.rest.sdk.utils.encoder.BASE64Encoder;
+import sun.misc.BASE64Decoder;
+import sun.misc.BASE64Encoder;
 
 import java.io.*;
 

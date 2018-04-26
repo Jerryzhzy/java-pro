@@ -7,6 +7,8 @@ import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.io.Serializable;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath*:applicationContext.xml","classpath*:logback.xml" })
@@ -123,6 +125,81 @@ public class BaseTest<T, ID extends Serializable> extends AbstractJUnit4SpringCo
         }
         return sb.toString();
 
+    }
+
+
+    protected static final String regEx_script = "<script[^>]*?>.*?<\\/script>"; // 定义script的正则表达式
+    protected static final String regEx_style = "<(?!br|/?p)[^>]*>"; //"" 定义HTML标签的正则表达式
+    //protected static final String regEx_style1 = "<style[^>]*?>[\\s\\S]*?<\\/style>"; // 定义style的正则表达式
+    protected static final String regEx_html01 = "([\r\n])[\\s]+"; // 定义HTML标签的正则表达式
+    protected static final String regEx_html02 = "-->"; // 定义HTML标签的正则表达式
+    protected static final String regEx_html03 = "<!--.*"; // 定义HTML标签的正则表达式
+    //protected static final String regEx_html04 = "<[^>]+>"; // 定义HTML标签的正则表达式
+    //protected static final String regEx_html05 = "<(.[^>]*)>"; // 定义HTML标签的正则表达式
+    protected static final String regEx_html06 = "&(quot|#34);"; // 定义HTML标签的正则表达式
+    protected static final String regEx_html07 = "&(amp|#38);"; // 定义HTML标签的正则表达式
+    protected static final String regEx_html08 = "&(lt|#60);"; // 定义HTML标签的正则表达式
+    protected static final String regEx_html09 = "&(gt|#62);"; // 定义HTML标签的正则表达式
+    protected static final String regEx_html10 = "&(nbsp|#160);"; // 定义HTML标签的正则表达式
+    protected static final String regEx_html11 = "&(iexcl|#161);"; // 定义HTML标签的正则表达式
+    protected static final String regEx_html12 = "&(cent|#162);"; // 定义HTML标签的正则表达式
+    protected static final String regEx_html13 = "&(pound|#163);"; // 定义HTML标签的正则表达式
+    protected static final String regEx_html14 = "&(copy|#169);"; // 定义HTML标签的正则表达式
+    protected static final String regEx_html15 = "&#(\\d+);"; // 定义HTML标签的正则表达式
+    protected static final String regEx_html16 = "(\\s*<br.*?>\\s*)+"; //"<br/>" 定义HTML标签的正则表达式
+    protected static final String regEx_html17 = "<p[^>]*>\\s*"; //"<p>" 定义HTML标签的正则表达式
+    protected static final String regEx_html18 = "<p[^>]*>\\s*</p>"; //"" 定义HTML标签的正则表达式
+    protected static final String regEx_html19 = "^(\\s*<br.*?>\\s*)*"; //"" 定义HTML标签的正则表达式
+    protected static final String regEx_html20 = "^(\\s*)*"; //"" 定义HTML标签的正则表达式
+    //protected static final String regEx_color = "(?:&#|#)\\d+";//定义css颜色代码
+
+    //删除脚本
+    protected static final String reg_script = "<script[^>]*?>.*?</script>"; //" " 定义HTML标签的正则表达式
+    //删除HTML
+    protected static final String reg_htm01 = "<(.[^>]*)>"; //" " 定义HTML标签的正则表达式
+    protected static final String reg_htm02 = "([\\r\\n])[\\s]+";//" " 定义HTML标签的正则表达式
+    protected static final String reg_htm03 = "-->";//" " 定义HTML标签的正则表达式
+    protected static final String reg_htm04 = "<!--.*";//" " 定义HTML标签的正则表达式
+    protected static final String reg_htm05 = "&(quot|#34);";//"\"" 定义HTML标签的正则表达式
+    protected static final String reg_htm06 = "&(amp|#38);";//"&" 定义HTML标签的正则表达式
+    protected static final String reg_htm07 = "&(lt|#60);";//"<" 定义HTML标签的正则表达式
+    protected static final String reg_htm08 = "&(gt|#62);";//">" 定义HTML标签的正则表达式
+    protected static final String reg_htm09 = "&(nbsp|#160);";//" " 定义HTML标签的正则表达式
+    protected static final String reg_htm10 = "&(iexcl|#161);";//"\xa1" 定义HTML标签的正则表达式
+    protected static final String reg_htm11 = "&(cent|#162);";//"\xa2" 定义HTML标签的正则表达式
+    protected static final String reg_htm12 = "&(pound|#163);";//"\xa3" 定义HTML标签的正则表达式
+    protected static final String reg_htm13 = "&(copy|#169);";//"\xa9" 定义HTML标签的正则表达式
+    protected static final String reg_htm14 = "&#(\\d+);";//" " 定义HTML标签的正则表达式
+
+    protected String match(String htmlStr,String regEx,String replace){
+        Pattern p_script = Pattern.compile(regEx, Pattern.CASE_INSENSITIVE);
+        Matcher m_script = p_script.matcher(htmlStr);
+        String newHtmlStr = m_script.replaceAll(replace);
+        return newHtmlStr;
+    }
+    protected String delHTMLTag1(String htmlStr) {
+        String htmlStr1 = match(htmlStr,regEx_script," ");
+        String htmlStr2 = match(htmlStr1,regEx_style," ");
+        String htmlStr3 = match(htmlStr2,regEx_html01," ");
+        String htmlStr4 = match(htmlStr3,regEx_html02," ");
+        String htmlStr5 = match(htmlStr4,regEx_html03," ");
+        String htmlStr6 = match(htmlStr5,regEx_html06,"\"");
+        String htmlStr7 = match(htmlStr6,regEx_html07,"&");
+        String htmlStr8 = match(htmlStr7,regEx_html08,"<");
+        String htmlStr9 = match(htmlStr8,regEx_html09,">");
+        String htmlStr10 = match(htmlStr9,regEx_html10," ");
+        String htmlStr11 = match(htmlStr10,regEx_html11,"\\xa1");
+        String htmlStr12 = match(htmlStr11,regEx_html12,"\\xa2");
+        String htmlStr13 = match(htmlStr12,regEx_html13,"\\xa3");
+        String htmlStr14 = match(htmlStr13,regEx_html14,"\\xa9");
+        String htmlStr15 = match(htmlStr14,regEx_html15,"");
+        String htmlStr16 = match(htmlStr15,regEx_html16," ");//<br/>
+        String htmlStr17 = match(htmlStr16,regEx_html17," ");//<p>
+        String htmlStr18 = match(htmlStr17,regEx_html18," ");
+        String htmlStr19 = match(htmlStr18,regEx_html19," ");
+        String htmlStr20 = match(htmlStr19,regEx_html20," ");
+        String htmlStr21 = htmlStr20.replaceAll("\\<p>|</p>","");
+        return htmlStr21;
     }
 
 }
