@@ -4,6 +4,9 @@ import java.util.concurrent.*;
 
 public class FutureTaskTest {
     public static void main(String[] args) {
+        test();
+    }
+    public static void test() {
         //ExecutorService 方式：
         //ExecutorService executor = Executors.newCachedThreadPool();
         ExecutorService executor = Executors.newFixedThreadPool(20);
@@ -27,16 +30,17 @@ public class FutureTaskTest {
                 e1.printStackTrace();
             }
             try {
-                System.out.println(tasknum+"运行结果" + futureTask.get());
+                System.out.println(tasknum + "运行结果" + futureTask.get(5000, TimeUnit.MILLISECONDS));
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (ExecutionException e) {
                 e.printStackTrace();
+            } catch (TimeoutException e) {
+                e.printStackTrace();
             }
-
-            System.out.println(tasknum+"任务执行完毕");
         }
     }
+
 }
 class Task implements Callable<String> {
 
